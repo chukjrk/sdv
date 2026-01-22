@@ -6,15 +6,25 @@ import type { Event, Match, Player } from './database';
 export interface QueryAgentInput {
   userMessage: string
   conversationHistory?: Message[]
+  availableCompetitions?: string[]
 }
 
 export interface QueryAgentOutput {
-  intent: 'visualization' | 'comparison' | 'question' | 'unknown'
+  intent: QueryIntent
   filters: EventFilters
   visualizationType?: VisualizationType
   confidence: number
-  reasoning?: string
+  reasoning?: string // Why the agent chose this intepretation
+  suggestedQuery?: string[] // SQL for debugging
 }
+
+export type QueryIntent = 
+  | 'visualization' 
+  | 'comparison'
+  | 'statistics'
+  | 'question'
+  | 'clarification'
+  | 'unknown';
 
 export type VisualizationType = 
   | 'heatmap' 
@@ -29,14 +39,35 @@ export interface EventFilters {
   playerIds?: number[]
   teamNames?: string[]
   teamIds?: number[]
-  eventTypes?: string[]
+  eventTypes?: EventType[]
   matchId?: number
   matchIds?: number[]
-  timeRange?: { start: number; end: number }
+  competitionNames?: string[]
+  //Temporal filters
+  timeRange?: { start: number; end: number } // minutes
+  period?: (1 | 2)[]
+  //Spatial filters
   zones?: PitchZone[]
-  outcome?: string
-  period?: 1 | 2
+  xRange?: { start: number; end: number } // 0-120
+  yRange?: { start: number; end: number } // 0-80
+  //Outcome filters
+  outcomes?: string[]
+  //Limit filters
+  limit?: number
 }
+
+export type EventType = 
+  | 'Pass'
+  | 'Shot'
+  | 'Carry'
+  | 'Duel'
+  | 'Interception'
+  | 'Tackle'
+  | 'Clearance'
+  | 'Foul Committed'
+  | 'Goal Keeper'
+  | 'Ball Receipt'
+  | 'Pressure'
 
 export type PitchZone = 
   | 'defensive_third' 
