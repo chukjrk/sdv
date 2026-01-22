@@ -135,7 +135,7 @@ export type Database = {
           jersey_number: number
           match_id: number | null
           player_id: number | null
-          position_name: string
+          position_name: string | null
           team_id: number
           team_name: string
         }
@@ -145,7 +145,7 @@ export type Database = {
           jersey_number: number
           match_id?: number | null
           player_id?: number | null
-          position_name: string
+          position_name: string | null
           team_id: number
           team_name: string
         }
@@ -155,7 +155,7 @@ export type Database = {
           jersey_number?: number
           match_id?: number | null
           player_id?: number | null
-          position_name?: string
+          position_name?: string | null
           team_id?: number
           team_name?: string
         }
@@ -242,33 +242,33 @@ export type Database = {
           created_at: string | null
           id: string
           jersey_number: number
-          player_age: number
+          player_age: number | null
           player_id: number
           player_name: string
-          player_nickname: string
-          player_position: string
+          player_nickname: string | null
+          player_position: string | null
         }
         Insert: {
           country?: string | null
           created_at?: string | null
           id?: string
           jersey_number: number
-          player_age: number
+          player_age: number | null
           player_id: number
           player_name: string
-          player_nickname: string
-          player_position: string
+          player_nickname: string | null
+          player_position: string | null
         }
         Update: {
           country?: string | null
           created_at?: string | null
           id?: string
           jersey_number?: number
-          player_age?: number
+          player_age?: number | null
           player_id?: number
           player_name?: string
-          player_nickname?: string
-          player_position?: string
+          player_nickname?: string | null
+          player_position?: string | null
         }
         Relationships: []
       }
