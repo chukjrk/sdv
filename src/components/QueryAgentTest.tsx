@@ -45,40 +45,43 @@ export function QueryAgentTest() {
   }
 
   return (
-    <div>
-      <div className="mb-4">
-        <h2>Query Agent Test</h2>
-        <p>
-          Test the query agent with natural language queries. Click on an
-          example to fill the input field.
+    <div className="query-agent-container">
+      {/* Header Section */}
+      <div className="query-agent-header">
+        <h2 className="query-agent-title">Query Agent Test</h2>
+        <p className="query-agent-description">
+          Test the query agent with natural language queries. Click on an example to fill the input field.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Query Input Section */}
+      <form onSubmit={handleSubmit} className="query-form">
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Enter your query..."
-          className="w-full p-2 border border-gray-300 rounded-md"
+          className="query-input"
           disabled={loading}
         />
         <button
           type="submit"
           disabled={loading || !query.trim()}
-          className="bg-blue-500 text-white p-2 rounded-md"
+          className="query-button"
         >
           {loading ? "Searching..." : "Search"}
         </button>
       </form>
 
-      <div>
-        <div>
+      {/* Example Queries Section */}
+      <div className="examples-section">
+        <h3 className="examples-title">Example Queries</h3>
+        <div className="examples-grid">
           {EXAMPLE_QUERIES.map((example) => (
             <button
               key={example}
               onClick={() => handleExampleClick(example)}
-              className="bg-blue-500 text-white p-2 rounded-md"
+              className="example-button"
               disabled={loading}
             >
               {example}
@@ -87,12 +90,20 @@ export function QueryAgentTest() {
         </div>
       </div>
 
-      {error && <div className="text-red-500">{error}</div>}
+      {/* Error Message */}
+      {error && (
+        <div className="error-container">
+          <p className="error-title">Error</p>
+          <p className="error-message">{error}</p>
+        </div>
+      )}
 
+      {/* Results Section */}
       {result && (
-        <div>
-          <div>
-            <h3>Parsed Query</h3>
+        <div className="results-container">
+          {/* Confidence Section */}
+          <div className="confidence-section">
+            <h3 className="section-title">Parsed Query</h3>
             <span
               className={`confidence confidence-${getConfidenceLevel(result.confidence)}`}
             >
@@ -100,17 +111,20 @@ export function QueryAgentTest() {
             </span>
           </div>
 
-          <div>
-            <div>
-              <h4>Intent</h4>
+          {/* Query Details */}
+          <div className="details-container">
+            {/* Intent */}
+            <div className="detail-item">
+              <h4 className="detail-label">Intent</h4>
               <span className={`intent-badge intent-${result.intent}`}>
                 {result.intent}
               </span>
             </div>
 
+            {/* Visualization Type */}
             {result.visualizationType && (
-              <div>
-                <h4>Visualization Type</h4>
+              <div className="detail-item">
+                <h4 className="detail-label">Visualization Type</h4>
                 <span
                   className={`visualization-type-badge visualization-type-${result.visualizationType}`}
                 >
@@ -119,14 +133,20 @@ export function QueryAgentTest() {
               </div>
             )}
 
-            <div>
-              <h4>Reasoning</h4>
-              <span className="reasoning">{result.reasoning}</span>
+            {/* Reasoning */}
+            <div className="detail-item">
+              <h4 className="detail-label">Reasoning</h4>
+              <p className="reasoning-container">
+                <span className="reasoning">{result.reasoning}</span>
+              </p>
             </div>
 
-            <div>
-              <h4>Filters</h4>
-              <pre>{JSON.stringify(result.filters, null, 2)}</pre>
+            {/* Filters */}
+            <div className="detail-item">
+              <h4 className="detail-label">Filters</h4>
+              <pre className="filters-code">
+                {JSON.stringify(result.filters, null, 2)}
+              </pre>
             </div>
           </div>
         </div>

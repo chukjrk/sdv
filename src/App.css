@@ -1,42 +1,49 @@
-/* #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@reference "tailwindcss";
+
+/* App layout and structure */
+.App {
+  @apply min-h-screen bg-gray-50;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Navigation styling */
+.app-nav {
+  @apply bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg;
+  @apply px-6 py-6 flex items-center justify-between;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.app-nav h1 {
+  @apply text-2xl font-bold flex items-center gap-2;
+}
+
+.app-nav div {
+  @apply flex gap-4;
+}
+
+.app-nav button {
+  @apply px-4 py-2 rounded-lg font-semibold transition-all duration-200;
+  @apply bg-blue-700 hover:bg-blue-500 text-white;
+}
+
+.app-nav button.active {
+  @apply bg-white text-blue-600 shadow-md;
+}
+
+/* Main content area */
+.app-main {
+  @apply max-w-7xl mx-auto px-6 py-8;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .app-nav {
+    @apply flex-col items-start gap-4;
   }
-  to {
-    transform: rotate(360deg);
+
+  .app-nav h1 {
+    @apply text-xl;
+  }
+
+  .app-main {
+    @apply px-4 py-4;
   }
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-} */

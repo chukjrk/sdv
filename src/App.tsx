@@ -14,7 +14,7 @@ function App() {
         <div>
           <button
             onClick={() => setActiveTab("query-agent")}
-            className={activeTab === "query-agent" ? "active" : ""}
+            className={`app-nav button ${activeTab === "query-agent" ? "active" : ""}`}
           >
             Query Agent
           </button>
