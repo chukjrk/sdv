@@ -1,0 +1,287 @@
+@reference 'tailwindcss';
+@reference 'tw-animate-css';
+
+/* Main container */
+.query-data-test {
+  @apply space-y-8;
+}
+
+/* Header */
+.test-header {
+  @apply mb-8;
+}
+
+.test-header h2 {
+  @apply text-3xl font-bold mb-2 text-black;
+}
+
+.test-header p {
+  @apply text-lg;
+  color: #555555;
+}
+
+/* Query form */
+.query-data-test .query-form {
+  @apply flex flex-wrap gap-3 items-center;
+}
+
+.query-data-test .query-input {
+  @apply flex-1 min-w-[200px] px-4 py-3 rounded-lg transition-colors text-gray-800 placeholder-gray-400;
+  background-color: var(--page-bg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.query-data-test .query-input:focus {
+  @apply outline-none;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px var(--accent-lavender);
+}
+
+.query-data-test .query-form button[type="submit"] {
+  @apply font-semibold py-3 px-5 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+  background-color: var(--accent-lavender);
+  color: var(--accent-lavender-dark);
+}
+
+.query-data-test .query-form button[type="submit"]:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+/* Example chips */
+.examples {
+  @apply space-y-3;
+}
+
+.examples p {
+  @apply text-sm font-semibold text-gray-700;
+}
+
+.example-chips {
+  @apply flex flex-wrap gap-2;
+}
+
+.example-chip {
+  @apply text-left px-4 py-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-sm;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.example-chip:hover:not(:disabled) {
+  box-shadow: 0 0 0 2px var(--accent-lavender);
+}
+
+/* Error box */
+.error-box {
+  @apply p-4 rounded-lg border-l-4;
+  background-color: #fef2f2;
+  border-color: #f87171;
+}
+
+.error-box h3 {
+  @apply font-semibold mb-2;
+  color: #b91c1c;
+}
+
+.error-box pre {
+  @apply text-sm overflow-x-auto;
+  color: #dc2626;
+}
+
+/* Agent result cards (Query Agent + Data Agent) */
+.agent-result {
+  @apply rounded-lg p-6 space-y-4;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid oklch(0.97 0.01 102);
+}
+
+.agent-header {
+  @apply flex flex-wrap items-center justify-between gap-3 pb-4 border-b;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.agent-header h3 {
+  @apply text-lg font-semibold text-black;
+}
+
+.agent-content {
+  @apply space-y-4;
+}
+
+/* Confidence badges */
+.confidence {
+  @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.confidence-high {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.confidence-medium {
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+.confidence-low {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+/* Info rows, labels, badges */
+.info-row {
+  @apply space-y-1;
+}
+
+.info-row .label {
+  @apply text-sm font-semibold uppercase tracking-wide text-gray-500;
+}
+
+.badge {
+  @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
+}
+
+.intent-filter,
+.intent-aggregate,
+.intent-compare,
+.intent-search,
+.intent-temporal {
+  background-color: oklch(92% 0.1 91.936);
+  color: var(--accent-lavender-dark);
+}
+
+.viz-badge {
+  background-color: oklch(94% 0.06 91.936);
+  color: var(--accent-lavender-dark);
+}
+
+.reasoning {
+  @apply text-sm italic;
+  color: #555;
+}
+
+/* Filters JSON */
+.filters-section {
+  @apply space-y-2;
+}
+
+.filters-json {
+  @apply p-4 rounded-lg overflow-x-auto text-xs;
+  background-color: #1a1a1a;
+  color: #e5e5e5;
+}
+
+/* Data agent header stats */
+.agent-header .stats {
+  @apply flex gap-4 text-sm;
+}
+
+.agent-header .stat {
+  @apply font-medium text-gray-600;
+}
+
+/* Data result error */
+.agent-content .error-message {
+  @apply p-3 rounded-lg text-sm;
+  background-color: #fef2f2;
+  color: #dc2626;
+}
+
+/* Data summary */
+.data-summary {
+  @apply grid grid-cols-1 sm:grid-cols-3 gap-4;
+}
+
+.summary-stat {
+  @apply p-4 rounded-lg text-center;
+  background-color: var(--page-bg);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.stat-value {
+  @apply text-2xl font-bold text-black;
+}
+
+.stat-label {
+  @apply text-sm text-gray-500 mt-1;
+}
+
+/* Metadata & filter badges */
+.metadata {
+  @apply space-y-2;
+}
+
+.metadata .label {
+  @apply text-sm font-semibold text-gray-600;
+}
+
+.filter-badges {
+  @apply flex flex-wrap gap-2;
+}
+
+.filter-badge {
+  @apply px-2 py-1 rounded text-xs font-medium;
+  background-color: oklch(92% 0.08 91.936);
+  color: var(--accent-lavender-dark);
+}
+
+.warning {
+  @apply text-sm py-2 px-3 rounded-lg mt-2;
+  background-color: #fef9c3;
+  color: #854d0e;
+}
+
+/* Events table */
+.events-preview {
+  @apply space-y-3;
+}
+
+.events-preview h4 {
+  @apply text-sm font-semibold text-gray-700;
+}
+
+.events-table {
+  @apply rounded-lg overflow-hidden border;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.table-header {
+  @apply grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-3 text-xs font-semibold uppercase tracking-wide;
+  background-color: var(--page-bg);
+  color: #555;
+}
+
+.table-row {
+  @apply grid grid-cols-[4rem_1fr_1fr_1fr_1fr_1fr] gap-2 px-4 py-2 text-sm border-t;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.table-row:hover {
+  background-color: oklch(0.98 0.01 102);
+}
+
+.event-type {
+  @apply font-medium text-gray-800;
+}
+
+.team-name {
+  @apply font-medium;
+}
+
+.location {
+  @apply text-gray-500 text-xs font-mono;
+}
+
+.outcome {
+  @apply text-gray-400;
+}
+
+.outcome.has-outcome {
+  @apply text-green-600 font-medium;
+}
+
+.more-events {
+  @apply text-sm text-gray-500 italic;
+}
