@@ -1,7 +1,7 @@
 @reference 'tailwindcss';
 @reference 'tw-animate-css';
 
-/* Main container */
+/* Main container – generous spacing, Gumroad-style */
 .query-agent-container {
   @apply space-y-8;
 }
@@ -12,11 +12,12 @@
 }
 
 .query-agent-title {
-  @apply text-3xl font-bold text-gray-900 mb-2;
+  @apply text-3xl font-bold mb-2 text-black;
 }
 
 .query-agent-description {
-  @apply text-gray-600 text-lg;
+  @apply text-lg;
+  color: #555555;
 }
 
 /* Query Input Section */
@@ -25,55 +26,89 @@
 }
 
 .query-input {
-  @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 transition-colors text-gray-700 placeholder-gray-400;
+  @apply w-full px-4 py-3 rounded-lg transition-colors text-gray-800 placeholder-gray-400;
+  background-color: var(--page-bg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.query-input:focus {
+  @apply outline-none;
+  background-color: #fff;
+  box-shadow: 0 0 0 2px var(--accent-lavender);
 }
 
 .query-button {
-  @apply w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-colors duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed;
+  @apply w-full font-semibold py-3 px-4 rounded-lg transition-colors duration-200 disabled:cursor-not-allowed;
+  background-color: var(--accent-lavender);
+  color: var(--accent-lavender-dark);
 }
 
-/* Example Queries Section */
+.query-button:hover:not(:disabled) {
+  filter: brightness(0.95);
+}
+
+.query-button:disabled {
+  @apply bg-gray-400 text-gray-200;
+}
+
+/* Example Queries – white cards with soft shadow */
 .examples-section {
   @apply space-y-4;
 }
 
 .examples-title {
-  @apply text-lg font-semibold text-gray-800 mb-4;
+  @apply text-lg font-semibold mb-4 text-black;
 }
 
 .examples-grid {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-3;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-4;
 }
 
 .example-button {
-  @apply text-left bg-gradient-to-r from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 text-blue-900 border-2 border-blue-300 p-3 rounded-lg transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply text-left p-4 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  background-color: #fff;
+  color: #333;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.example-button:hover:not(:disabled) {
+  box-shadow: 0 0 0 2px var(--accent-lavender);
 }
 
 /* Error Message */
 .error-container {
-  @apply bg-red-50 border-l-4 border-red-500 p-4 rounded;
+  @apply border-l-4 p-4 rounded-lg;
+  background-color: #fef2f2;
+  border-color: #f87171;
 }
 
 .error-title {
-  @apply text-red-700 font-semibold;
+  @apply font-semibold;
+  color: #b91c1c;
 }
 
 .error-message {
-  @apply text-red-600 text-sm mt-1;
+  @apply text-sm mt-1;
+  color: #dc2626;
 }
 
-/* Results Section */
+/* Results Section – white card, less rounded, soft shadow */
 .results-container {
-  @apply bg-white border-2 border-gray-200 rounded-lg p-6 space-y-6;
+  @apply rounded-lg p-6 space-y-6;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid oklch(0.97 0.01 102);
 }
 
 /* Confidence Section */
 .confidence-section {
-  @apply pb-6 border-b border-gray-200;
+  @apply pb-6 border-b;
+  border-color: rgba(0, 0, 0, 0.08);
 }
 
 .section-title {
-  @apply text-lg font-semibold text-gray-800 mb-3;
+  @apply text-lg font-semibold mb-3 text-black;
 }
 
 /* Query Details */
@@ -86,21 +121,27 @@
 }
 
 .detail-label {
-  @apply text-sm font-semibold text-gray-700 uppercase tracking-wide mb-2;
+  @apply text-sm font-semibold uppercase tracking-wide mb-2;
+  color: #555;
 }
 
-/* Reasoning styling */
+/* Reasoning – page background tint */
 .reasoning-container {
-  @apply bg-gray-50 p-4 rounded-lg border border-gray-200;
+  @apply p-4 rounded-lg;
+  background-color: var(--page-bg);
+  border: 1px solid oklch(0.96 0.02 102);
 }
 
 .reasoning {
-  @apply text-gray-700 italic;
+  @apply italic;
+  color: #555;
 }
 
 /* Filters styling */
 .filters-code {
-  @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-xs;
+  @apply p-4 rounded-lg overflow-x-auto text-xs;
+  background-color: #1a1a1a;
+  color: #e5e5e5;
 }
 
 /* Confidence badge styling */
@@ -109,40 +150,48 @@
 }
 
 .confidence-high {
-  @apply bg-green-100 text-green-800;
+  background-color: #dcfce7;
+  color: #166534;
 }
 
 .confidence-medium {
-  @apply bg-yellow-100 text-yellow-800;
+  background-color: #fef9c3;
+  color: #854d0e;
 }
 
 .confidence-low {
-  @apply bg-red-100 text-red-800;
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
-/* Intent badge styling */
+/* Intent badge styling – lavender pink accent */
 .intent-badge {
   @apply inline-block px-3 py-1 rounded-full text-sm font-semibold;
 }
 
 .intent-filter {
-  @apply bg-blue-100 text-blue-800;
+  background-color: oklch(92% 0.1 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .intent-aggregate {
-  @apply bg-purple-100 text-purple-800;
+  background-color: oklch(92% 0.08 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .intent-compare {
-  @apply bg-orange-100 text-orange-800;
+  background-color: oklch(94% 0.06 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .intent-search {
-  @apply bg-indigo-100 text-indigo-800;
+  background-color: oklch(93% 0.09 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .intent-temporal {
-  @apply bg-pink-100 text-pink-800;
+  background-color: oklch(91% 0.12 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 /* Visualization type badge styling */
@@ -151,21 +200,26 @@
 }
 
 .visualization-type-heatmap {
-  @apply bg-red-100 text-red-800;
+  background-color: #fee2e2;
+  color: #991b1b;
 }
 
 .visualization-type-scatter {
-  @apply bg-cyan-100 text-cyan-800;
+  background-color: oklch(92% 0.08 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .visualization-type-line {
-  @apply bg-teal-100 text-teal-800;
+  background-color: oklch(92% 0.1 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .visualization-type-bar {
-  @apply bg-amber-100 text-amber-800;
+  background-color: oklch(94% 0.06 91.936);
+  color: var(--accent-lavender-dark);
 }
 
 .visualization-type-table {
-  @apply bg-slate-100 text-slate-800;
+  background-color: oklch(96% 0.03 102.212);
+  color: #475569;
 }

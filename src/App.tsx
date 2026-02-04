@@ -4,7 +4,7 @@ import { QueryAgentTest } from "./components/QueryAgentTest";
 
 function App() {
   const [activeTab, setActiveTab] = useState<"query-agent" | "data-explorer">(
-    "query-agent",
+    "query-agent"
   );
 
   return (
@@ -14,7 +14,9 @@ function App() {
         <div>
           <button
             onClick={() => setActiveTab("query-agent")}
-            className={`app-nav button ${activeTab === "query-agent" ? "active" : ""}`}
+            className={`app-nav button ${
+              activeTab === "query-agent" ? "active" : ""
+            }`}
           >
             Query Agent
           </button>

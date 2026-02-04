@@ -1,18 +1,20 @@
 @reference "tailwindcss";
 
-/* App layout and structure */
+/* App layout and structure – full viewport width */
 .App {
-  @apply min-h-screen bg-gray-50;
+  @apply min-h-screen w-full;
+  background-color: #f8f8f8;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 
-/* Navigation styling */
+/* Navigation – white bar, black text, subtle shadow */
 .app-nav {
-  @apply bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-lg;
-  @apply px-6 py-6 flex items-center justify-between;
+  @apply bg-white px-6 py-5 flex items-center justify-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .app-nav h1 {
-  @apply text-2xl font-bold flex items-center gap-2;
+  @apply text-2xl font-bold flex items-center gap-2 text-black;
 }
 
 .app-nav div {
@@ -20,17 +22,17 @@
 }
 
 .app-nav button {
-  @apply px-4 py-2 rounded-lg font-semibold transition-all duration-200;
-  @apply bg-blue-700 hover:bg-blue-500 text-white;
+  @apply px-4 py-2 rounded-xl font-semibold transition-all duration-200 text-sm;
+  @apply text-gray-600 hover:text-black;
 }
 
 .app-nav button.active {
-  @apply bg-white text-blue-600 shadow-md;
+  @apply bg-black text-white rounded-xl;
 }
 
-/* Main content area */
+/* Main content area – full width */
 .app-main {
-  @apply max-w-7xl mx-auto px-6 py-8;
+  @apply w-full px-6 py-8;
 }
 
 /* Responsive breakpoints */
