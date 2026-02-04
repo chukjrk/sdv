@@ -57,5 +57,3 @@ export async function getPlayerStats(playerName: string, matchId?: number) {
   if (error) throw error
   return data[0]
 }
-
-import type { EventFilters } from "@/types/agents";
