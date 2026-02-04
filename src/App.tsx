@@ -1,11 +1,12 @@
 import "./App.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { QueryAgentTest } from "./components/QueryAgentTest";
+import { QueryDataTest } from "./components/QueryDataTest";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<"query-agent" | "data-explorer">(
-    "query-agent"
-  );
+  const [activeTab, setActiveTab] = useState<
+    "query-agent" | "data-query" | "data-explorer"
+  >("query-agent");
 
   return (
     <div className="App">
@@ -20,11 +21,20 @@ function App() {
           >
             Query Agent
           </button>
+          <button
+            onClick={() => setActiveTab("data-query")}
+            className={`app-nav button ${
+              activeTab === "data-query" ? "active" : ""
+            }`}
+          >
+            Data Query
+          </button>
         </div>
       </nav>
 
       <main className="app-main">
         {activeTab === "query-agent" && <QueryAgentTest />}
+        {activeTab === "data-query" && <QueryDataTest />}
       </main>
     </div>
   );
