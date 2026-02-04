@@ -94,7 +94,12 @@ export interface DataAgentOutput {
   players?: Player[]
   totalCount: number
   executionTime: number
+  metadata?: {
+    filtersApplied: string[]
+    limited: boolean
+  }
   query?: string
+  error?: string
 }
 
 // ============================================
