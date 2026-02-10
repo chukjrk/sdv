@@ -18,15 +18,14 @@ import json
 from datetime import datetime, timedelta
 
 import pandas as pd
-from airflow.decorators import dag, task
-from airflow.models.dataset import Dataset
 from airflow.providers.postgres.hooks.postgres import PostgresHook
+from airflow.sdk import Asset, dag, task
 
 # Asset that triggers this DAG when new data lands
-WORLDCUP_DATA_ASSET = Dataset("worldcup_events_loaded")
+WORLDCUP_DATA_ASSET = Asset("worldcup_events_loaded")
 
 # Asset this DAG produces (for downstream consumers if any)
-SEMANTICS_READY_ASSET = Dataset("soccer_semantics_ready")
+SEMANTICS_READY_ASSET = Asset("soccer_semantics_ready")
 
 
 @dag(

@@ -16,11 +16,12 @@ import os
 from datetime import datetime, timedelta
 
 import requests
-from airflow.decorators import dag, task
-from airflow.models.dataset import Dataset
+from airflow.sdk import Asset, dag, task
+
+# from airflow.models.dataset import Dataset
 
 # Asset that triggers semantics refresh when new data is loaded
-WORLDCUP_DATA_ASSET = Dataset("worldcup_events_loaded")
+WORLDCUP_DATA_ASSET = Asset("worldcup_events_loaded")
 
 # StatsBomb open data base URL
 STATSBOMB_BASE_URL = "https://raw.githubusercontent.com/statsbomb/open-data/master/data"
