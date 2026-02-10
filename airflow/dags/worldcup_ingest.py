@@ -12,15 +12,15 @@ the `soccer_semantics_refresh` DAG to rebuild player aliases, zones, and
 event synonyms for the NL query agent.
 """
 
-import json
 import os
 from datetime import datetime, timedelta
 
 import requests
-from airflow.sdk import Asset, dag, task
+from airflow.decorators import dag, task
+from airflow.models.dataset import Dataset
 
 # Asset that triggers semantics refresh when new data is loaded
-WORLDCUP_DATA_ASSET = Asset("worldcup_events_loaded")
+WORLDCUP_DATA_ASSET = Dataset("worldcup_events_loaded")
 
 # StatsBomb open data base URL
 STATSBOMB_BASE_URL = "https://raw.githubusercontent.com/statsbomb/open-data/master/data"
@@ -95,7 +95,9 @@ def worldcup_ingest():
                     f"Fetched {len(matches)} matches for {comp['competition_name']} {comp['season_name']}"
                 )
             except requests.exceptions.RequestException as e:
-                print(f"Warning: Could not fetch matches for {comp['season_name']}: {e}")
+                print(
+                    f"Warning: Could not fetch matches for {comp['season_name']}: {e}"
+                )
                 continue
 
         print(f"Total matches fetched: {len(all_matches)}")
@@ -158,9 +160,7 @@ def worldcup_ingest():
         """Load competitions into Supabase."""
         from supabase import create_client
 
-        supabase = create_client(
-            os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"]
-        )
+        supabase = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
 
         # Deduplicate by competition_id
         seen = set()
@@ -190,9 +190,7 @@ def worldcup_ingest():
         """Transform and load matches into Supabase."""
         from supabase import create_client
 
-        supabase = create_client(
-            os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"]
-        )
+        supabase = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
 
         transformed = []
         for m in matches:
@@ -234,9 +232,7 @@ def worldcup_ingest():
         """Extract players from lineups and load both into Supabase."""
         from supabase import create_client
 
-        supabase = create_client(
-            os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"]
-        )
+        supabase = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
 
         players_map = {}
         lineups_to_insert = []
@@ -254,7 +250,8 @@ def worldcup_ingest():
                     players_map[player_id] = {
                         "player_id": player_id,
                         "player_name": player["player_name"],
-                        "player_nickname": player.get("player_nickname") or player["player_name"],
+                        "player_nickname": player.get("player_nickname")
+                        or player["player_name"],
                         "jersey_number": player.get("jersey_number", 0),
                         "country": player.get("country", {}).get("name"),
                         "player_age": player.get("player_age"),
@@ -290,7 +287,9 @@ def worldcup_ingest():
                 batch, on_conflict="match_id,player_id,team_id"
             ).execute()
 
-        print(f"Loaded {len(players_list)} players and {len(lineups_to_insert)} lineups")
+        print(
+            f"Loaded {len(players_list)} players and {len(lineups_to_insert)} lineups"
+        )
         return {"players": len(players_list), "lineups": len(lineups_to_insert)}
 
     @task(outlets=[WORLDCUP_DATA_ASSET])
@@ -301,9 +300,7 @@ def worldcup_ingest():
         """
         from supabase import create_client
 
-        supabase = create_client(
-            os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"]
-        )
+        supabase = create_client(os.environ["SUPABASE_URL"], os.environ["SUPABASE_KEY"])
 
         transformed = []
         for e in events:
@@ -397,7 +394,9 @@ def worldcup_ingest():
         for key, value in summary.items():
             print(f"  {key}: {value}")
         print("=" * 50)
-        print("Asset 'worldcup_events_loaded' updated - semantics DAG will be triggered")
+        print(
+            "Asset 'worldcup_events_loaded' updated - semantics DAG will be triggered"
+        )
         return summary
 
     # DAG flow: Extract → Transform → Load

@@ -18,14 +18,15 @@ import json
 from datetime import datetime, timedelta
 
 import pandas as pd
-from airflow.sdk import Asset, dag, task
+from airflow.decorators import dag, task
+from airflow.models.dataset import Dataset
 from airflow.providers.postgres.hooks.postgres import PostgresHook
 
 # Asset that triggers this DAG when new data lands
-WORLDCUP_DATA_ASSET = Asset("worldcup_events_loaded")
+WORLDCUP_DATA_ASSET = Dataset("worldcup_events_loaded")
 
 # Asset this DAG produces (for downstream consumers if any)
-SEMANTICS_READY_ASSET = Asset("soccer_semantics_ready")
+SEMANTICS_READY_ASSET = Dataset("soccer_semantics_ready")
 
 
 @dag(
@@ -72,19 +73,19 @@ def soccer_semantics_refresh():
         """
         Build player aliases using fuzzy matching.
         Groups similar names and picks the longest (most complete) as canonical.
-        
+
         Example: "L. Messi", "Messi", "Lionel Messi" → canonical: "Lionel Messi"
         """
         from fuzzywuzzy import process
 
         players = pd.read_json(players_json)
-        
+
         if players.empty:
             print("No players to process")
             return 0
-            
+
         all_names = list(dict.fromkeys(players["player_name"].dropna().tolist()))
-        
+
         if not all_names:
             print("No player names found")
             return 0
@@ -191,67 +192,107 @@ def soccer_semantics_refresh():
         synonyms = {
             # Core events
             "Pass": [
-                "pass", "passes", "passing", "distribution", "ball distribution",
-                "through ball", "cross", "crosses", "assist", "key pass"
+                "pass",
+                "passes",
+                "passing",
+                "distribution",
+                "ball distribution",
+                "through ball",
+                "cross",
+                "crosses",
+                "assist",
+                "key pass",
             ],
             "Shot": [
-                "shot", "shots", "shooting", "shoot", "strike", "strikes",
-                "attempt", "attempts", "finish", "finishing"
+                "shot",
+                "shots",
+                "shooting",
+                "shoot",
+                "strike",
+                "strikes",
+                "attempt",
+                "attempts",
+                "finish",
+                "finishing",
             ],
             "Carry": [
-                "carry", "carries", "run with ball", "dribbling run", 
-                "progressive carry", "ball carry"
+                "carry",
+                "carries",
+                "run with ball",
+                "dribbling run",
+                "progressive carry",
+                "ball carry",
             ],
             "Dribble": [
-                "dribble", "dribbles", "take-on", "take on", "beat defender",
-                "skill move", "1v1"
+                "dribble",
+                "dribbles",
+                "take-on",
+                "take on",
+                "beat defender",
+                "skill move",
+                "1v1",
             ],
             # Defensive events
             "Pressure": [
-                "pressure", "pressures", "press", "pressing", "harass",
-                "close down", "high press"
+                "pressure",
+                "pressures",
+                "press",
+                "pressing",
+                "harass",
+                "close down",
+                "high press",
             ],
             "Interception": [
-                "interception", "interceptions", "intercept", "cut off pass",
-                "break up play", "read the game"
+                "interception",
+                "interceptions",
+                "intercept",
+                "cut off pass",
+                "break up play",
+                "read the game",
             ],
             "Tackle": [
-                "tackle", "tackles", "tackling", "dispossess", "win ball",
-                "challenge", "sliding tackle"
+                "tackle",
+                "tackles",
+                "tackling",
+                "dispossess",
+                "win ball",
+                "challenge",
+                "sliding tackle",
             ],
             "Clearance": [
-                "clearance", "clearances", "clear", "cleared", "kick out",
-                "head away", "defensive clearance"
+                "clearance",
+                "clearances",
+                "clear",
+                "cleared",
+                "kick out",
+                "head away",
+                "defensive clearance",
             ],
-            "Block": [
-                "block", "blocks", "blocking", "shot block", "blocked"
-            ],
+            "Block": ["block", "blocks", "blocking", "shot block", "blocked"],
             # Set pieces
             "Foul Committed": [
-                "foul", "fouls", "fouled", "committed foul", "infringement"
+                "foul",
+                "fouls",
+                "fouled",
+                "committed foul",
+                "infringement",
             ],
-            "Foul Won": [
-                "foul won", "won foul", "drew foul", "earned foul"
-            ],
-            "Free Kick": [
-                "free kick", "free kicks", "set piece", "dead ball"
-            ],
-            "Corner": [
-                "corner", "corners", "corner kick"
-            ],
-            "Penalty": [
-                "penalty", "penalties", "pen", "spot kick", "penalty kick"
-            ],
+            "Foul Won": ["foul won", "won foul", "drew foul", "earned foul"],
+            "Free Kick": ["free kick", "free kicks", "set piece", "dead ball"],
+            "Corner": ["corner", "corners", "corner kick"],
+            "Penalty": ["penalty", "penalties", "pen", "spot kick", "penalty kick"],
             # Other
             "Goal Keeper": [
-                "save", "saves", "goalkeeper", "keeper", "gk", "punch", "catch"
+                "save",
+                "saves",
+                "goalkeeper",
+                "keeper",
+                "gk",
+                "punch",
+                "catch",
             ],
-            "Ball Receipt*": [
-                "receive", "reception", "ball receipt", "first touch"
-            ],
-            "Ball Recovery": [
-                "recovery", "recover", "ball recovery", "win possession"
-            ],
+            "Ball Receipt*": ["receive", "reception", "ball receipt", "first touch"],
+            "Ball Recovery": ["recovery", "recover", "ball recovery", "win possession"],
         }
 
         pg_hook = PostgresHook(postgres_conn_id="soccer_db")
@@ -286,10 +327,10 @@ def soccer_semantics_refresh():
             UNION
             SELECT DISTINCT team_name FROM events WHERE team_name IS NOT NULL
         """
-        
+
         df = pg_hook.get_pandas_df(query)
         team_names = df["team_name"].dropna().tolist()
-        
+
         # Common team aliases (World Cup teams)
         known_aliases = {
             "Germany": ["Deutschland", "Die Mannschaft", "German"],
@@ -303,7 +344,7 @@ def soccer_semantics_refresh():
             "Italy": ["Italia", "Azzurri", "Italian"],
             "Belgium": ["Red Devils", "Belgian"],
         }
-        
+
         # This is a placeholder - in production you'd store these
         # For now just log what we found
         print(f"Found {len(team_names)} unique team names")
@@ -341,7 +382,7 @@ def soccer_semantics_refresh():
 
     # DAG flow - all semantic tasks can run in parallel after data is ready
     players_json = extract_players()
-    
+
     # Build all semantic tables
     aliases_count = build_player_aliases(players_json)
     zones_count = build_pitch_zones()
